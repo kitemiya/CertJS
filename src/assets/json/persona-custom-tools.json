@@ -1,0 +1,18 @@
+{
+  "scripts": [
+    {
+      "scriptName": "Search Item by PK",
+      "scriptDisplayName": "Search Item by PK",
+      "scriptPath": "custom-tool1",
+      "scriptType": "Persona_Custom_Tools",
+      "scriptId": "29212"
+    },
+	{
+      "scriptName": "Redirect",
+      "scriptDisplayName": "Redirect",
+      "scriptPath": "redirect",
+      "scriptType": "Persona_Custom_Tools",
+      "scriptId": "29213"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+<label>Select Preview</label>
+<select (change)="onSelect($event.target.value)">
+  <option *ngFor="let script of previewScripts" value="{{ script.scriptPath }}">
+    {{ script.scriptDisplayName }}
+  </option>
+</select>
+<div><div #vc></div></div>
+<div></div>

@@ -1,0 +1,28 @@
+{
+  "scripts": [
+    {
+      "scriptDisplayName": "Show All Item Ids",
+      "scriptType": "Persona UI Entry Preview",
+      "scriptPath": "first-preview",
+      "containerName": ["Сертификаты"]
+    },
+    {
+      "scriptDisplayName": "Update Attribute",
+      "scriptType": "Persona UI Entry Preview",
+      "scriptPath": "update-attribute",
+      "containerName": ["Сертификаты"]
+    },
+    {
+      "scriptDisplayName": "Show Selected Item Ids",
+      "scriptType": "Persona UI Entry Preview",
+      "scriptPath": "second-preview",
+      "containerName": ["Сертификаты"]
+    },
+    {
+      "scriptDisplayName": "Redirect to SE",
+      "scriptType": "Persona UI Entry Preview",
+      "scriptPath": "redirectSE",
+      "containerName": ["Сертификаты"]
+    }
+  ]
+}

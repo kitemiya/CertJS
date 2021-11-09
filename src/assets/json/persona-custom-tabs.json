@@ -1,0 +1,22 @@
+{
+  "scripts": [
+    {
+      "scriptDisplayName": "Related Item Details",
+      "scriptType": "Persona UI Custom Tabs",
+      "scriptPath": "sample-tab1",
+      "containerName": ["Сертификаты"]
+    },
+    {
+      "scriptDisplayName": "Approval Details",
+      "scriptType": "Persona UI Custom Tabs",
+      "scriptPath": "sample-tab2",
+      "containerName": ["Сертификаты"]
+    },
+	{
+      "scriptDisplayName": "Redirect to SE",
+      "scriptType": "Persona UI Custom Tabs",
+      "scriptPath": "redirectSE",
+      "containerName": ["Сертификаты"]
+    }
+  ]
+}
