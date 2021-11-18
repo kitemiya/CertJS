@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RedirectSEComponent } from "./components/redirectSE.component";
 
+import { BinaryPreviewTabComponent } from "./components/binary-preview-tab.component";
 import { SampleTab1Component } from "./components/sample-tab1.component";
 import { SampleTab2Component } from "./components/sample-tab2.component";
 import { FilterPipe } from "./pipes/filter.pipe";
@@ -15,6 +16,7 @@ import { KeyValuePipe } from "./pipes/key-value.pipe";
     SampleTab1Component,
     SampleTab2Component,
     RedirectSEComponent,
+    BinaryPreviewTabComponent,
     KeyValuePipe,
     GroupKeyValuePipe,
     FilterPipe,

@@ -12,10 +12,16 @@
       "scriptPath": "sample-tab2",
       "containerName": ["Сертификаты"]
     },
-	{
+	  {
       "scriptDisplayName": "Redirect to SE",
       "scriptType": "Persona UI Custom Tabs",
       "scriptPath": "redirectSE",
+      "containerName": ["Сертификаты"]
+    },
+    {
+      "scriptDisplayName": "Preview",
+      "scriptType": "Persona UI Custom Tabs",
+      "scriptPath": "binary-preview-tab",
       "containerName": ["Сертификаты"]
     }
   ]
