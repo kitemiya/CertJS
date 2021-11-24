@@ -13,11 +13,11 @@ var BinaryPreviewTabComponent = /** @class */ (function (_super) {
         _this.customFilesServ = customFilesServ;
         _this.domSanitizer = domSanitizer;
         _this.responseFile = [];
-        _this.slideIndex = 1;
         return _this;
     }
     BinaryPreviewTabComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.slideIndex = 0;
         var urlFilesName;
         if (this.inputData) {
             urlFilesName =
@@ -36,7 +36,6 @@ var BinaryPreviewTabComponent = /** @class */ (function (_super) {
                 });
             }
         });
-        this.showSlides(this.slideIndex);
     };
     BinaryPreviewTabComponent.prototype.photoURL = function (url) {
         return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
@@ -62,35 +61,33 @@ var BinaryPreviewTabComponent = /** @class */ (function (_super) {
         }, function (error) {
             console.error("Error:: " + error);
         });
-        responseFile["headerData"] = [];
-        responseFile["headerData"] = imageData;
+        responseFile["imageData"] = [];
+        responseFile["imageData"] = imageData;
         this.responseFile.push(responseFile);
     };
-    BinaryPreviewTabComponent.prototype.plusSlides = function (n) {
-        this.showSlides(this.slideIndex += n);
-    };
-    BinaryPreviewTabComponent.prototype.showSlides = function (n) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        if (slides) {
-            if (n > slides.length) {
-                this.slideIndex = 1;
-            }
-            if (n < 1) {
-                this.slideIndex = slides.length;
-            }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = 'none';
-            }
-            var currentSlide = this.slideIndex - 1;
-            console.log(currentSlide, this.slideIndex, slides);
-            slides[currentSlide].style.display = 'block';
+    BinaryPreviewTabComponent.prototype.showSlide = function (slides, n) {
+        this.slideIndex = n;
+        if (n >= slides.length) {
+            this.slideIndex = 0;
         }
+        if (n < 0) {
+            this.slideIndex = slides.length - 1;
+        }
+        var slide = slides[this.slideIndex].imageData.image;
+        return slide;
+    };
+    BinaryPreviewTabComponent.prototype.getPrev = function (slides, i) {
+        i = i - 1;
+        this.showSlide(slides, i);
+    };
+    BinaryPreviewTabComponent.prototype.getNext = function (slides, i) {
+        i = i + 1;
+        this.showSlide(slides, i);
     };
     BinaryPreviewTabComponent = tslib_1.__decorate([
         Component({
             selector: "binary-preview-tab",
-            template: "\n    <style>\n    * {\n      box-sizing: border-box;\n    }\n    .container {\n      position: relative;\n    }\n    .mySlides {\n      display: none;\n    }\n    .prev,\n    .next {\n      cursor: pointer;\n      position: absolute;\n      top: 40%;\n      width: auto;\n      padding: 16px;\n      margin-top: -50px;\n      color: black;\n      font-weight: bold;\n      font-size: 20px;\n      border-radius: 0 3px 3px 0;\n      user-select: none;\n      -webkit-user-select: none;\n    }\n    .next {\n      right: 0;\n      border-radius: 3px 0 0 3px;\n    }\n    .prev:hover,\n    .next:hover {\n      background-color: rgba(0, 0, 0, 0.8);\n    }\n    </style>\n\n    <div class=\"container preview\">\n      <div *ngFor=\"let item of responseFile;  first as isFirst\">\n        <div *ngIf=\"item?.headerData.image\" class=\"mySlides\">\n          <ng-container *ngIf=\"item?.headerData.type === '.pdf'; else imgBlock\">\n            <iframe\n              [src]=\"photoURL(item?.headerData.image)\"\n              type=\"application/pdf\"\n              style=\"width:100%; height:500px;\"\n            ></iframe>\n          </ng-container>\n          <ng-template #imgBlock>\n            <img\n              [src]=\"photoURL(item?.headerData.image)\"\n              style=\"width:100%\"\n            />\n          </ng-template>\n        </div>\n      </div>\n      <a class=\"prev\" (click)=\"plusSlides(-1)\">&#10094;</a>\n      <a class=\"next\" (click)=\"plusSlides(1)\">&#10095;</a>\n    </div>\n  ",
+            template: "\n    <style>\n    * {\n      box-sizing: border-box;\n    }\n    .container {\n      position: relative;\n    }\n    .prev,\n    .next {\n      cursor: pointer;\n      position: absolute;\n      top: 40%;\n      width: auto;\n      padding: 16px;\n      margin-top: -50px;\n      color: black;\n      font-weight: bold;\n      font-size: 20px;\n      border-radius: 0 3px 3px 0;\n      user-select: none;\n      -webkit-user-select: none;\n    }\n    .next {\n      right: 0;\n      border-radius: 3px 0 0 3px;\n    }\n    .prev:hover,\n    .next:hover {\n      background-color: rgba(0, 0, 0, 0.8);\n    }\n    </style>\n\n    <div class=\"container preview\">\n      <div *ngIf=\"responseFile[slideIndex]\" id=\"carouselExampleControls\" class=\"carousel slide\" data-ride=\"carousel\">\n        <div class=\"carousel-inner\" role=\"listbox\">\n          <ng-container *ngIf=\"responseFile[slideIndex].imageData.type === '.pdf'; else imgBlock\">\n            <iframe\n              [src]=\"photoURL(showSlide(responseFile, slideIndex))\"  \n              type=\"application/pdf\"\n              style=\"width:100%; height:500px; padding-top: 10px;\"\n            ></iframe>\n          </ng-container>\n          <ng-template #imgBlock>\n            <img\n              [src]=\"photoURL(showSlide(responseFile, slideIndex))\"\n              style=\"width:100%; padding-top: 10px;\"\n              />\n          </ng-template>\n        </div>\n        <ng-container *ngIf=\"responseFile.length > 1\">\n          <a class=\"prev\" (click)=\"photoURL(getPrev(responseFile, slideIndex))\">&#10094;</a>\n          <a class=\"next\" (click)=\"photoURL(getNext(responseFile, slideIndex))\">&#10095;</a>\n        </ng-container>\n      </div>\n      <img *ngIf=\"!responseFile[slideIndex]\" src=\"assets/images/default-image.png\" />\n    </div>\n  ",
             providers: [
                 CustomFilesService,
                 HttpErrorHandlerService,

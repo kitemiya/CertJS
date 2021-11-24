@@ -17,9 +17,6 @@ import { HttpErrorHandlerService } from "../services/http-error-handler.service"
     .container {
       position: relative;
     }
-    .mySlides {
-      display: none;
-    }
     .prev,
     .next {
       cursor: pointer;
@@ -46,25 +43,28 @@ import { HttpErrorHandlerService } from "../services/http-error-handler.service"
     </style>
 
     <div class="container preview">
-      <div *ngFor="let item of responseFile;  first as isFirst">
-        <div *ngIf="item?.headerData.image" class="mySlides">
-          <ng-container *ngIf="item?.headerData.type === '.pdf'; else imgBlock">
+      <div *ngIf="responseFile[slideIndex]" id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+          <ng-container *ngIf="responseFile[slideIndex].imageData.type === '.pdf'; else imgBlock">
             <iframe
-              [src]="photoURL(item?.headerData.image)"
+              [src]="photoURL(showSlide(responseFile, slideIndex))"  
               type="application/pdf"
-              style="width:100%; height:500px;"
+              style="width:100%; height:500px; padding-top: 10px;"
             ></iframe>
           </ng-container>
           <ng-template #imgBlock>
             <img
-              [src]="photoURL(item?.headerData.image)"
-              style="width:100%"
-            />
+              [src]="photoURL(showSlide(responseFile, slideIndex))"
+              style="width:100%; padding-top: 10px;"
+              />
           </ng-template>
         </div>
+        <ng-container *ngIf="responseFile.length > 1">
+          <a class="prev" (click)="photoURL(getPrev(responseFile, slideIndex))">&#10094;</a>
+          <a class="next" (click)="photoURL(getNext(responseFile, slideIndex))">&#10095;</a>
+        </ng-container>
       </div>
-      <a class="prev" (click)="plusSlides(-1)">&#10094;</a>
-      <a class="next" (click)="plusSlides(1)">&#10095;</a>
+      <img *ngIf="!responseFile[slideIndex]" src="assets/images/default-image.png" />
     </div>
   `,
   providers: [
@@ -79,6 +79,7 @@ export class BinaryPreviewTabComponent extends BaseCustomTabs implements OnInit 
   filesNamedata: any;
   responseFile: any[] = [];
   fileUrl: string;
+  slideIndex: number;
   constructor(
     private customFilesServ: CustomFilesService,
     public domSanitizer: DomSanitizer
@@ -87,6 +88,7 @@ export class BinaryPreviewTabComponent extends BaseCustomTabs implements OnInit 
   }
  
   ngOnInit() {
+    this.slideIndex = 0;
     let urlFilesName;
     if (this.inputData) {
       urlFilesName =
@@ -107,8 +109,6 @@ export class BinaryPreviewTabComponent extends BaseCustomTabs implements OnInit 
           });
         }
     })
-    
-    this.showSlides(this.slideIndex);
   }
 
   photoURL(url) {
@@ -138,29 +138,27 @@ export class BinaryPreviewTabComponent extends BaseCustomTabs implements OnInit 
         console.error("Error:: " + error);
       }
     );
-    responseFile["headerData"] = [];
-    responseFile["headerData"] = imageData;
+    responseFile["imageData"] = [];
+    responseFile["imageData"] = imageData;
     this.responseFile.push(responseFile);
   }
 
-  plusSlides(n: number) {
-    this.showSlides(this.slideIndex += n);
+  showSlide(slides, n) {
+    this.slideIndex = n;
+    if (n >= slides.length) { this.slideIndex = 0 }
+    if (n < 0) {this.slideIndex = slides.length -1}
+    let slide = slides[this.slideIndex].imageData.image;
+    return slide;
   }
-  
-  slideIndex: number = 1;
 
-  showSlides(n: number) {
-    let i: number;
-    let slides = document.getElementsByClassName("mySlides") as HTMLCollectionOf<HTMLElement>;
-    if (slides) {
-      if (n > slides.length) {this.slideIndex = 1}
-      if (n < 1) {this.slideIndex = slides.length}
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display =  'none';
-      }
-      let currentSlide = this.slideIndex - 1;
-      console.log(currentSlide, this.slideIndex, slides);
-      slides[currentSlide].style.display = 'block';
-    }
+  getPrev(slides, i) {
+    i = i - 1;
+    this.showSlide(slides, i)
   }
+
+  getNext(slides, i) {
+    i = i + 1;
+    this.showSlide(slides, i)
+  }
+
 }
